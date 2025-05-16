@@ -1,0 +1,1 @@
+1,Toyota,Corolla,2019,2000000.0,test,movie-rental-nethuli.png
