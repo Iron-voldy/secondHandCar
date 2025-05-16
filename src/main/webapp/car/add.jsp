@@ -46,7 +46,7 @@
         </div>
 
         <div class="form-group">
-            <label for="price">Price (USD) <span style="color: red">*</span></label>
+            <label for="price">Price (LKR) <span style="color: red">*</span></label>
             <input type="number" id="price" step="0.01" name="price" required min="0" placeholder="e.g., 15000">
         </div>
 

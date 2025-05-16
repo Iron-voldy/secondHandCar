@@ -8,6 +8,7 @@
         <nav>
             <a href="<%=request.getContextPath()%>/"><i class="fas fa-home"></i> Home</a>
             <a href="<%=request.getContextPath()%>/cars"><i class="fas fa-search"></i> Browse Cars</a>
+            <a href="<%=request.getContextPath()%>/reviews"><i class="fas fa-star"></i> Reviews</a>
             <a href="<%=request.getContextPath()%>/cars/add"><i class="fas fa-plus-circle"></i> Sell a Car</a>
         </nav>
     </div>

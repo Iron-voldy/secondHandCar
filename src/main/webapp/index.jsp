@@ -166,6 +166,69 @@
     </div>
 </section>
 
+<!-- Reviews Section -->
+<section style="background-color: #f0f4ff; padding: 80px 0; text-align: center;">
+    <div class="container">
+        <h2>Customer Reviews</h2>
+        <p style="margin: 20px 0 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            See what our customers have to say about their experiences with our cars.
+            Your feedback helps others make better buying decisions.
+        </p>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin: 30px 0;">
+            <div style="flex: 1; min-width: 300px; max-width: 400px; background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: left;">
+                <div style="margin-bottom: 15px;">
+                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                </div>
+                <p style="font-style: italic; color: #555; margin-bottom: 15px;">
+                    "The car I purchased was exactly as described. Great condition, fair price, and the transaction was smooth and easy. Highly recommend this platform!"
+                </p>
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background-color: #1e3c72; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600;">Sarah Johnson</div>
+                        <div style="font-size: 0.9em; color: #777;">Toyota Corolla Owner</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="flex: 1; min-width: 300px; max-width: 400px; background-color: white; border-radius: 8px; padding: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); text-align: left;">
+                <div style="margin-bottom: 15px;">
+                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                    <i class="fas fa-star" style="color: #FFD700;"></i>
+                </div>
+                <p style="font-style: italic; color: #555; margin-bottom: 15px;">
+                    "Found my dream car at an amazing price! The detailed descriptions and high-quality photos helped me make an informed decision. Couldn't be happier with my purchase."
+                </p>
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 40px; height: 40px; background-color: #1e3c72; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600;">Michael Brown</div>
+                        <div style="font-size: 0.9em; color: #777;">Honda Civic Owner</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <a href="<%=request.getContextPath()%>/reviews" class="btn btn-primary hero-btn">
+                <i class="fas fa-star"></i> See All Reviews
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- Call to Action Section -->
 <section style="background-color: #f9f9f9; padding: 80px 0; text-align: center;">
     <div class="container">

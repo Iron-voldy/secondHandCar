@@ -1,1 +1,3 @@
-1,Toyota,Corolla,2019,2000000.0,test,movie-rental-nethuli.png
+2,Toyota,Corolla,2022,1.25E7,Well-maintained Toyota Corolla with low mileage. Features include air conditioning, power steering, electric windows, and central locking. Fuel-efficient and perfect for city driving.,Toyota-Corolla.jpg
+3,Honda,Civic,2023,1.48E7,Sporty Honda Civic with automatic transmission. Includes premium sound system, reverse camera, alloy wheels, and cruise control. Service history available.,Honda-Civic-Featured-image-e1689756948404.jpeg
+4,Suzuki,Swift,2021,7900000.0,Compact and fuel-efficient Suzuki Swift. Great condition with air conditioning, power steering, and electric windows. Ideal for navigating busy Sri Lankan streets.,Suzuki-Swift9-scaled-e1686126319706.jpg
