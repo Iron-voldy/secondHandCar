@@ -22,6 +22,7 @@ public class CarServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         loadCarsFromFile();
+        getServletContext().setAttribute("CarServlet", this);
     }
 
     @Override
@@ -329,6 +330,11 @@ public class CarServlet extends HttpServlet {
             // Start with empty list if there's an error
         }
     }
+
+    public Car getCarDetails(int carId) {
+        return carList.findCar(carId);
+    }
+
 
     private void saveCarsToFile() {
         File dataDir = new File(getServletContext().getRealPath("/WEB-INF/data"));
