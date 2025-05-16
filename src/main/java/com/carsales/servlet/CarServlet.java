@@ -52,6 +52,10 @@ public class CarServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid car ID");
             }
+        } else if (pathInfo.startsWith("/search")) {
+            searchCars(request, response);
+        } else if (pathInfo.startsWith("/sort/")) {
+            sortCars(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
@@ -66,16 +70,65 @@ public class CarServlet extends HttpServlet {
             addCar(request, response);
         } else if (pathInfo.startsWith("/edit/")) {
             updateCar(request, response);
+        } else if (pathInfo.startsWith("/search")) {
+            searchCars(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
     private void listCars(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sortParam = request.getParameter("sort");
+        MergeSort.SortCriteria sortCriteria = getSortCriteria(sortParam);
+
         Car[] carsArray = carList.toArray();
-        carsArray = MergeSort.sort(carsArray);
+        carsArray = MergeSort.sort(carsArray, sortCriteria);
         List<Car> cars = Arrays.asList(carsArray);
+
         request.setAttribute("cars", cars);
+        request.setAttribute("currentSort", sortParam != null ? sortParam : "price_asc");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/car/list.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void sortCars(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sortType = request.getPathInfo().substring(6); // Get sort type from URL
+        response.sendRedirect(request.getContextPath() + "/cars?sort=" + sortType);
+    }
+
+    private MergeSort.SortCriteria getSortCriteria(String sortParam) {
+        if (sortParam == null) {
+            return MergeSort.SortCriteria.PRICE_ASC;
+        }
+
+        switch (sortParam) {
+            case "price_desc":
+                return MergeSort.SortCriteria.PRICE_DESC;
+            case "year_asc":
+                return MergeSort.SortCriteria.YEAR_ASC;
+            case "year_desc":
+                return MergeSort.SortCriteria.YEAR_DESC;
+            case "make":
+                return MergeSort.SortCriteria.MAKE_ASC;
+            case "model":
+                return MergeSort.SortCriteria.MODEL_ASC;
+            case "price_asc":
+            default:
+                return MergeSort.SortCriteria.PRICE_ASC;
+        }
+    }
+
+    private void searchCars(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String keyword = request.getParameter("keyword");
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            Car[] searchResults = carList.searchCars(keyword);
+            request.setAttribute("cars", Arrays.asList(searchResults));
+            request.setAttribute("keyword", keyword);
+        } else {
+            request.setAttribute("cars", Arrays.asList(carList.toArray()));
+        }
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("/car/list.jsp");
         dispatcher.forward(request, response);
     }
@@ -105,14 +158,29 @@ public class CarServlet extends HttpServlet {
                 }
                 int year = Integer.parseInt(yearStr);
                 double price = Double.parseDouble(priceStr);
-                String[] images = imageNames.toArray(new String[0]);
+
+                // If no images uploaded, use a default placeholder
+                String[] images;
+                if (imageNames.isEmpty()) {
+                    images = new String[]{"default-car.jpg"};
+                } else {
+                    images = imageNames.toArray(new String[0]);
+                }
+
                 Car car = new Car(nextId++, make, model, year, price, description, images);
                 carList.addCar(car);
                 saveCarsToFile();
+
+                // Set success message
+                request.getSession().setAttribute("message", "Car successfully added!");
+                request.getSession().setAttribute("messageType", "success");
+
                 response.sendRedirect(request.getContextPath() + "/cars");
             } catch (Exception e) {
                 e.printStackTrace();
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error processing upload: " + e.getMessage());
+                request.getSession().setAttribute("message", "Error: " + e.getMessage());
+                request.getSession().setAttribute("messageType", "danger");
+                response.sendRedirect(request.getContextPath() + "/cars/add");
             }
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Form must be multipart/form-data");
@@ -161,13 +229,20 @@ public class CarServlet extends HttpServlet {
                         car.setImages(imageNames.toArray(new String[0]));
                     }
                     saveCarsToFile();
+
+                    // Set success message
+                    request.getSession().setAttribute("message", "Car successfully updated!");
+                    request.getSession().setAttribute("messageType", "success");
+
                     response.sendRedirect(request.getContextPath() + "/cars");
                 } else {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "Car not found");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error processing upload: " + e.getMessage());
+                request.getSession().setAttribute("message", "Error: " + e.getMessage());
+                request.getSession().setAttribute("messageType", "danger");
+                response.sendRedirect(request.getContextPath() + "/cars");
             }
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Form must be multipart/form-data");
@@ -175,8 +250,15 @@ public class CarServlet extends HttpServlet {
     }
 
     private void deleteCar(int id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        carList.removeCar(id);
-        saveCarsToFile();
+        boolean removed = carList.removeCar(id);
+        if (removed) {
+            saveCarsToFile();
+            request.getSession().setAttribute("message", "Car successfully deleted!");
+            request.getSession().setAttribute("messageType", "success");
+        } else {
+            request.getSession().setAttribute("message", "Car not found!");
+            request.getSession().setAttribute("messageType", "danger");
+        }
         response.sendRedirect(request.getContextPath() + "/cars");
     }
 
@@ -184,6 +266,22 @@ public class CarServlet extends HttpServlet {
         Car car = carList.findCar(id);
         if (car != null) {
             request.setAttribute("car", car);
+
+            // Get similar cars (same make or same price range)
+            Car[] allCars = carList.toArray();
+            List<Car> similarCars = new ArrayList<>();
+            double priceRange = car.getPrice() * 0.2; // 20% price range
+
+            for (Car otherCar : allCars) {
+                if (otherCar.getId() != car.getId() &&
+                        (otherCar.getMake().equals(car.getMake()) ||
+                                Math.abs(otherCar.getPrice() - car.getPrice()) <= priceRange)) {
+                    similarCars.add(otherCar);
+                    if (similarCars.size() >= 3) break; // Limit to 3 similar cars
+                }
+            }
+
+            request.setAttribute("similarCars", similarCars);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/car/view.jsp");
             dispatcher.forward(request, response);
         } else {
