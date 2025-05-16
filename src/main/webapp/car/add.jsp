@@ -2,12 +2,12 @@
 <html>
 <head>
     <title>Add Car</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/styles.css">
 </head>
 <body>
 <%@ include file="../includes/header.jsp" %>
 <h2>Add New Car</h2>
-<form action="${pageContext.request.contextPath}/cars/add" method="post" enctype="multipart/form-data">
+<form action="<%=request.getContextPath()%>/cars/add" method="post" enctype="multipart/form-data">
     Make: <input type="text" name="make" required><br>
     Model: <input type="text" name="model" required><br>
     Year: <input type="number" name="year" required><br>

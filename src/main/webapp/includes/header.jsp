@@ -2,7 +2,7 @@
 <header>
     <h1>Second-Hand Car Sales Platform</h1>
     <nav>
-        <a href="${pageContext.request.contextPath}/">Home</a> |
-        <a href="${pageContext.request.contextPath}/cars">Cars</a>
+        <a href="<%=request.getContextPath()%>/">Home</a> |
+        <a href="<%=request.getContextPath()%>/cars">Cars</a>
     </nav>
 </header>

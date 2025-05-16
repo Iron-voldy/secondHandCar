@@ -109,7 +109,7 @@ grant codeBase "file:${catalina.home}/bin/bootstrap.jar" {
         permission java.security.AllPermission;
 };
 
-// These permissions apply to the servlet API classes
+// These permissions apply to the com.carsales.servlet API classes
 // and those that are shared across all class loaders
 // located in the "lib" directory
 grant codeBase "file:${catalina.home}/lib/-" {

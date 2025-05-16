@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>Car List</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/styles.css">
 </head>
 <body>
 <%@ include file="../includes/header.jsp" %>
@@ -27,14 +27,14 @@
         <td><%= car.getYear() %></td>
         <td>$<%= String.format("%.2f", car.getPrice()) %></td>
         <td>
-            <a href="${pageContext.request.contextPath}/cars/view/<%= car.getId() %>">View</a>
-            <a href="${pageContext.request.contextPath}/cars/edit/<%= car.getId() %>">Edit</a>
-            <a href="${pageContext.request.contextPath}/cars/delete/<%= car.getId() %>" onclick="return confirm('Are you sure?')">Delete</a>
+            <a href="<%=request.getContextPath()%>/cars/view/<%= car.getId() %>">View</a>
+            <a href="<%=request.getContextPath()%>/cars/edit/<%= car.getId() %>">Edit</a>
+            <a href="<%=request.getContextPath()%>/cars/delete/<%= car.getId() %>" onclick="return confirm('Are you sure?')">Delete</a>
         </td>
     </tr>
     <% } %>
 </table>
-<a href="${pageContext.request.contextPath}/cars/add">Add New Car</a>
+<a href="<%=request.getContextPath()%>/cars/add">Add New Car</a>
 <%@ include file="../includes/footer.jsp" %>
 </body>
 </html>

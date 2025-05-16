@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>View Car</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/styles.css">
 </head>
 <body>
 <%@ include file="../includes/header.jsp" %>
@@ -17,9 +17,9 @@
 <p>Description: <%= car.getDescription() %></p>
 <h3>Images:</h3>
 <% for (String image : car.getImages()) { %>
-<img src="${pageContext.request.contextPath}/images/cars/<%= image %>" width="200" alt="Car Image"><br>
+<img src="<%=request.getContextPath()%>/images/cars/<%= image %>" width="200" alt="Car Image"><br>
 <% } %>
-<a href="${pageContext.request.contextPath}/cars">Back to List</a>
+<a href="<%=request.getContextPath()%>/cars">Back to List</a>
 <%@ include file="../includes/footer.jsp" %>
 </body>
 </html>

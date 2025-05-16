@@ -3,13 +3,13 @@
 <html>
 <head>
     <title>Edit Car</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/styles.css">
 </head>
 <body>
 <%@ include file="../includes/header.jsp" %>
 <h2>Edit Car</h2>
 <% Car car = (Car) request.getAttribute("car"); %>
-<form action="${pageContext.request.contextPath}/cars/edit/<%= car.getId() %>" method="post" enctype="multipart/form-data">
+<form action="<%=request.getContextPath()%>/cars/edit/<%= car.getId() %>" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="<%= car.getId() %>">
     Make: <input type="text" name="make" value="<%= car.getMake() %>" required><br>
     Model: <input type="text" name="model" value="<%= car.getModel() %>" required><br>
